@@ -1,114 +1,86 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, View, Pressable } from 'react-native';
+import CustomDatePicker from './src/components/datepicker';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import moment from 'moment';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const App = () => {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [birthdate, setBirthdate] = useState(moment('1989-09-05'));
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
+    const saveData = () => {
+        console.log(JSON.stringify({
+            name: name,
+            email: email,
+            birthdate: birthdate,
+        }));
+    }
+
+    return (
+        <View style={{ flex: 1 }}>
+            <View style={{ ...styles.inputWrapper, marginTop: 100 }}>
+                <Text>First and Last Name</Text>
+                <TextInput
+                    style={styles.textInput}
+                    onChangeText={(val) => setName(val)}
+                    placeholder='Bruce Wayne'
+                    value={name}
+                />
             </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
+            <View style={styles.inputWrapper}>
+                <Text>Email Address</Text>
+                <TextInput 
+                    style={styles.textInput}
+                    onChangeText={(val) => setEmail(val)}
+                    placeholder='bwayne@thebatcave.com'
+                    value={email}
+                    autoCapitalize='none'
+                />
             </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
+
+            <View style={styles.inputWrapper}>
+                <Text>Birthdate</Text>
+                <CustomDatePicker 
+                    textStyle={styles.textInput}
+                    defaultDate={birthdate}
+                    onDateChange={(val) => setBirthdate(val)}
+                />
             </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
+
+            <View style={styles.inputWrapper}>
+                <Pressable 
+                    style={styles.saveDetailsButton}
+                    onPress={saveData}>
+                    <Text style={styles.saveDetailsText}>
+                        Save Details
+                    </Text>
+                </Pressable>
             </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+    inputWrapper: {
+        marginTop: 30,
+        marginHorizontal: 20
+    },
+    textInput: {
+        paddingVertical: 15,
+        paddingHorizontal: 10,
+        borderColor: 'gray',
+        borderWidth: 1 
+    },
+    saveDetailsButton: {
+        backgroundColor: 'green', 
+        padding: 20, 
+        alignItems: 'center',
+    },
+    saveDetailsText: {
+        color: 'white',
+        fontWeight: '700',
+    },
 });
 
 export default App;
